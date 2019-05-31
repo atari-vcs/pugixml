@@ -1,0 +1,18 @@
+Description: Statically link test binaries
+ Trying to run dynamically linked test executable fails as it can't find
+ libpugixml.so.
+Author: Vasudev Kamath <vasudev@copyninja.info>
+Forwarded: not-needed
+Last-Update: 2017-05-28
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -84,6 +84,6 @@
+ 	list(REMOVE_ITEM TEST_SOURCES ${FUZZ_SOURCES})
+ 
+ 	add_executable(check ${TEST_SOURCES})
+-	target_link_libraries(check pugixml)
++	target_link_libraries(check pugixml-static)
+ 	add_custom_command(TARGET check POST_BUILD COMMAND check WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+ endif()

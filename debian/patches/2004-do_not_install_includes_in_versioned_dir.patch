@@ -1,0 +1,39 @@
+Description: Do not install in version suffixed directory
+ By default when pkg-config is enabled upstream installs the files into
+ pugixml-X.X directory. This is not needed on Debian so drop creating version
+ suffixed directory and install in system default location.
+Author: Vasudev Kamath <vasudev@copyninja.info>
+Last-Update: 2017-05-28
+Forwarded: not-needed
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -57,20 +57,20 @@ endif()
+ set_target_properties(pugixml PROPERTIES VERSION 1.9 SOVERSION 1)
+ get_target_property(PUGIXML_VERSION_STRING pugixml VERSION)
+ 
+-if(BUILD_PKGCONFIG)
+-	# Install library into its own directory under LIBDIR
+-	set(INSTALL_SUFFIX /pugixml-${PUGIXML_VERSION_STRING})
+-endif()
++# if(BUILD_PKGCONFIG)
++# 	# Install library into its own directory under LIBDIR
++# 	set(INSTALL_SUFFIX /pugixml-${PUGIXML_VERSION_STRING})
++# endif()
+ 
+ target_include_directories(pugixml PUBLIC
+ 	$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>
+ 	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}${INSTALL_SUFFIX}>)
+ 
+ install(TARGETS pugixml pugixml-static EXPORT pugixml-config
+-	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}${INSTALL_SUFFIX}
+-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}${INSTALL_SUFFIX}
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+-install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}${INSTALL_SUFFIX})
++install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+ install(EXPORT pugixml-config DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/pugixml)
+ 
+ if(BUILD_PKGCONFIG)

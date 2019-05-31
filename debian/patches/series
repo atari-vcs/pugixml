@@ -1,0 +1,5 @@
+2001-enable_staticlib_generation.patch
+2003-static_link_tests.patch
+2002-drop_privacy_breaching_code.patch
+2004-do_not_install_includes_in_versioned_dir.patch
+disable-failing-test.patch
